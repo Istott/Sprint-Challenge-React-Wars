@@ -1,19 +1,31 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './App.css';
+import TheForce from "./components/theforce";
+import SearchBar from "./components/searchbar";
 
-const App = () => {
-  // Try to think through what state you'll need for this app before starting. Then build out
-  // the state properties here.
+export default function App() {
 
-  // Fetch characters from the star wars api in an effect hook. Remember, anytime you have a 
-  // side effect in a component, you want to think about which state and/or props it should
-  // sync up with, if any.
+  const [pod, setPod] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('')
+
+  const getFilteredPeople = () => {
+    const term = searchTerm.trim()
+    return pod.filter(pt => {
+      if (!term) {
+        return pt
+      }
+      if (pt.name.toLowerCase().includes(term.toLowerCase())) {
+        return pt
+      }
+    })
+  }
 
   return (
     <div className="App">
       <h1 className="Header">React Wars</h1>
+      <SearchBar setSearchTerm={setSearchTerm} />
+      <TheForce setPod={setPod} force={getFilteredPeople()} />
     </div>
   );
 }
 
-export default App;
